@@ -1,0 +1,19 @@
+Cara menggunakan Github 
+------------------------------------------------------------------------------------
+untuk mendapatkan data up to date
+------------------------------------------------------------------------------------
+Pertama Buka Git branch
+kedua untuk mengambil data up to date tulis printah "git pull"
+
+------------------------------------------------------------------------------------
+Untuk melakukan Update data
+------------------------------------------------------------------------------------
+pertama cek dulu status data menggunakan perintah "git status"
+jika tulisannya merah artinya belum di masukan kestagin area.
+maka tuliskan perintah "git add ." untuk menambahkan semua data ke stagin area.
+
+kedua cek lagi status data menggunakan perintah "git status"
+jika sudah berwarna hijau tulisannya lanjutkan ke perintah selanjutnya
+yaitu tambahkan ada update apa menggunakan perintah 'git commit -m "update nih" '
+
+ketiga push data ke repository menggunakan perintah "git push -u origin main"
