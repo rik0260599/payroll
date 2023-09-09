@@ -15,7 +15,7 @@ class Tendik extends CI_Controller
         $data['title'] = "Gaji Tendik";
         $data['user'] = $this->m_auth->getUserLogin();
         $data['tendik'] = $this->getAllDataTendik();
-        
+        print_r($this->m_tendik->getAllGajiTendik());
         //$data['total']= $this->getTotalGaji(1);
 
         $this->load->view('template/header', $data);
@@ -27,7 +27,7 @@ class Tendik extends CI_Controller
 
     public function getAllDataTendik(){
         $data['tendik']= $this->m_tendik->getAllGajiTendik();
-
+        
         $newData = array();
         foreach($data['tendik'] as $key => $dt){
             $newData[$key]['id_gaji_tendik']  = $dt['id_gaji_tendik'];
