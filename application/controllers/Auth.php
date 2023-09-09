@@ -14,7 +14,7 @@ class Auth extends CI_Controller
         $this->form_validation->set_rules('email_undira', 'Email', 'required|trim|valid_email');
         $this->form_validation->set_rules('password', 'Password', 'required|trim');
         if ($this->form_validation->run() == false) {
-            $data['title'] = "Payroll Undira";
+            $data['title'] = "Payroll XYZ";
             $this->load->view('auth/header', $data);
             $this->load->view('auth/login');
             $this->load->view('auth/footer');

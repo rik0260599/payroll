@@ -13,7 +13,9 @@
 	"require": {
 		"php": ">=5.3.7",
 		"phpoffice/phpspreadsheet": "^1.28",
-		"google/apiclient": "2.12.1"
+		"google/apiclient": "2.12.1",
+		"chriskacerguis/codeigniter-restserver": "*",
+		"guzzlehttp/guzzle": "*"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

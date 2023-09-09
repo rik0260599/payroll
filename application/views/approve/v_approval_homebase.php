@@ -8,7 +8,8 @@
         <div class="col-3">
             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <a class="nav-link" id="approvalTendik" href="<?=base_url('approve');?>" role="tab"
-                    aria-controls="v-pills-home">Gaji Tendik <span class="badge badge-warning">2</span></a>
+                    aria-controls="v-pills-home">Gaji Tendik <span
+                        class="badge badge-warning"><?= $count_tendik;?></span></a>
                 <a class="nav-link active" id="approvalHomebase" href="<?=base_url('approve/homebase');?>" role="tab"
                     aria-controls="v-pills-profile">Gaji Dosen Homebase <span class="badge badge-warning">5</span></a>
             </div>

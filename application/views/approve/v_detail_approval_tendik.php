@@ -201,7 +201,7 @@
             </div>
         </div>
         <div class="card-footer py-3">
-            <a href="<?= base_url('tendik');?>" class="btn btn-warning btn-sm">Kembali</a>
+            <a href="<?= base_url('approve');?>" class="btn btn-warning btn-sm">Kembali</a>
         </div>
     </div>
 </div>
