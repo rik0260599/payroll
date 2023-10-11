@@ -10,12 +10,9 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="d-flex">
-                <a href="<?= base_url('tendik/getTendikFromAPI')?>" class="btn btn-success btn-md" data-toggle="tooltip"
-                    data-placement="top" title="Untuk yang belum submit">Get Gaji</a>
+
                 <h6 class="m-0 font-weight-bold text-primary mr-auto p-2"><?= $title; ?></h6>
-                <a href="<?= base_url('tendik/sendAllForApproval')?>" class="btn btn-success btn-md"
-                    data-toggle="tooltip" data-placement="top" title="Untuk yang belum submit">Send All to
-                    Approval</a>
+
             </div>
 
         </div>
@@ -32,7 +29,6 @@
                             <th>Golongan</th>
                             <th>No Rekening</th>
                             <th>Gaji(Rp)</th>
-                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -50,26 +46,11 @@
                             <td class="text-center"><?= $gt['no_rek']; ?> (<?= $gt['nama_bank']; ?>)</td>
                             <td class="text-right"> <?= $gt['total'];?></td>
                             <td class="text-center">
-                                <?php if($gt['status']=="0"){?>
-                                <span class="badge badge-pill badge-info">Not Submit</span>
-                                <?php }elseif($gt['status']=="1"){?>
-                                <span class="badge badge-pill badge-warning">Approval Process</span>
-                                <?php }elseif($gt['status']=="2"){?>
-                                <span class="badge badge-pill badge-success">Approved</span>
-                                <?php }elseif($gt['status']=="3"){?>
-                                <span class="badge badge-pill badge-danger">Rejected</span>
-                                <a class="badge badge-pill badge-danger" name="icMessage"
-                                    id="<?= $gt['id_gaji_tendik'];?>"><i class="fas fa-envelope"></i></a>
-                                <?php }?>
-                            </td>
-                            <td class="text-center">
-                                <a class="btn btn-outline-primary btn-sm"
-                                    href="<?= base_url('tendik/detailtendik/'. $gt['id_gaji_tendik'])?>">Detail</a>
-                                <?php if($gt['status']=="0"){?>
-                                <a href="<?= base_url('tendik/sendForApproval/'. $gt['id_gaji_tendik'])?>"
-                                    class="btn btn-outline-success btn-sm">Send</a>
-                                <?php }?>
-
+                                <a class="btn btn-outline-primary btn-sm" title="Cetak"
+                                    href="<?= base_url('sliptendik/cetakslip/'.$gt['id_gaji_tendik'])?>"><i
+                                        class="fas fa-print"></i></a>
+                                <a class="btn btn-outline-warning btn-sm" title="Detail"
+                                    href="<?= base_url('tendik/detailTendik/'.$gt['id_gaji_tendik'])?>">Detail</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>

@@ -10,29 +10,21 @@
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <div class="d-flex">
-                <a href="<?= base_url('tendik/getTendikFromAPI')?>" class="btn btn-success btn-md" data-toggle="tooltip"
-                    data-placement="top" title="Untuk yang belum submit">Get Gaji</a>
                 <h6 class="m-0 font-weight-bold text-primary mr-auto p-2"><?= $title; ?></h6>
-                <a href="<?= base_url('tendik/sendAllForApproval')?>" class="btn btn-success btn-md"
-                    data-toggle="tooltip" data-placement="top" title="Untuk yang belum submit">Send All to
-                    Approval</a>
             </div>
 
         </div>
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered dtTendik" id="dataTable" width="100%" cellspacing="0">
+                <table class="table table-bordered dtPinjaman" id="dataTable" width="100%" cellspacing="0">
                     <thead class="text-center">
                         <tr>
                             <th>#</th>
-                            <th>Periode</th>
                             <th>NIP</th>
-                            <th>Nama</th>
-                            <th>Jabatan</th>
-                            <th>Golongan</th>
-                            <th>No Rekening</th>
-                            <th>Gaji(Rp)</th>
-                            <th>Status</th>
+                            <th>Total Pinjaman</th>
+                            <th>Tenor</th>
+                            <th>Alasan</th>
+                            <th>Tanggal Pengajuan</th>
                             <th>Action</th>
                         </tr>
                     </thead>

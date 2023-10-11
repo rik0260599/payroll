@@ -16,28 +16,11 @@ class Admin extends CI_Controller
         }
         $data['title'] = "Dashboard";
         $data['user'] = $this->m_auth->getUserLogin();
-        $data['total_user'] = $this->m_admin->total_user();
-        $data['total_jabatan'] = $this->m_admin->total_jabatan();
-        $data['total_pria'] = $this->m_admin->total_pria();
-        //jenis kelamin
-        $data['total_perempuan'] = $this->m_admin->total_perempuan();
-        $data['total_agama_islam'] = $this->m_admin->total_agama_islam();
-        //agama
-        $data['total_agama_kristen'] = $this->m_admin->total_agama_kristen();
-        $data['total_agama_katolik'] = $this->m_admin->total_agama_katolik();
-        $data['total_agama_hindu'] = $this->m_admin->total_agama_hindu();
-        $data['total_agama_buddha'] = $this->m_admin->total_agama_buddha();
-        $data['total_agama_konghuchu'] = $this->m_admin->total_agama_konghuchu();
-        //jenis pegawai
-        $data['total_pegawai_tendik'] = $this->m_admin->total_pegawai_tendik();
-        $data['total_pegawai_dosenTetap'] = $this->m_admin->total_pegawai_dosenTetap();
-        $data['total_pegawai_dosenTidakTetap'] = $this->m_admin->total_pegawai_dosenTidakTetap();
-        $data['total_pegawai_tetap'] = $this->m_admin->total_pegawai_tetap();
-        $data['total_pegawai_kontrak'] = $this->m_admin->total_pegawai_kontrak();
+        $data['script'] = "dashboard/dashboard_admin";
 
         $this->load->view('template/header', $data);
         $this->load->view('admin/index', $data);
-        $this->load->view('template/footer');
+        $this->load->view('template/footer',$data);
     }
     public function role()
     {

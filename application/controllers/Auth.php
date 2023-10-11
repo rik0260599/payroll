@@ -38,7 +38,8 @@ class Auth extends CI_Controller
                         'jabatan_id' => $user['jabatan_id'],
                         'email_undira' => $user['email_undira'],
 						'user_id' => $user['id'],
-                        'role_id' => $user['role_id']
+                        'role_id' => $user['role_id'],
+                        'nip' => $user['nik_karyawan']
                     ];
                     $this->session->set_userdata($data);
                     if ($user['role_id'] == 1) {
@@ -68,6 +69,7 @@ class Auth extends CI_Controller
         $this->session->unset_userdata('role_id');
         $this->session->unset_userdata('jabatan_id');
         $this->session->unset_userdata('user_id');
+        $this->session->unset_userdata('nip');
 
         $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">You have been logged out !!!</div>');
         redirect('auth');

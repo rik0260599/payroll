@@ -222,4 +222,22 @@ if (!function_exists('longdate_indo')) {
 	    $split = explode('-', $tanggal);
 	    return $split[2] . ' ' . $bulan[ (int)$split[1] ] . ' ' . $split[0];
     }
+
+    function bulan_indonesia2($tanggal){
+        $bulan = array (1 =>   'JANUARI',
+				'FEBRUARI',
+				'MARET',
+				'APRIL',
+				'MEI',
+				'JUNI',
+				'JULI',
+				'AGUSTUS',
+				'SEPTEMBER',
+				'OKTOBER',
+				'NOVEMBER',
+				'DESEMBER'
+			);
+	    $split = explode('-', $tanggal);
+	    return $bulan[ (int)$split[1] ].' ' . $split[0];
+    }
 }

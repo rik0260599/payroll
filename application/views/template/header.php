@@ -29,7 +29,7 @@
 </head>
 
 <body id="page-top">
-
+    <input type="hidden" id="homedir" value="<?= base_url()?>">
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -41,7 +41,7 @@
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-calculator"></i>
                 </div>
-                <div class="sidebar-brand-text mx-2">Payroll<sup>Undira</sup></div>
+                <div class="sidebar-brand-text mx-2">Payroll<sup>XYZ</sup></div>
             </a>
             <!-- Divider -->
             <hr class="sidebar-divider">

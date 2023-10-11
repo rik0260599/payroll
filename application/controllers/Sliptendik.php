@@ -1,33 +1,35 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Approve extends CI_Controller
+class Sliptendik extends CI_Controller
 {
     public function __construct()
     {
         parent::__construct();
         is_logged_in2();
-        $this->load->model('m_approve');
+        //$this->load->model('m_approve');
         $this->load->model('m_tendik');
+        $this->load->model('m_slip');
         
     }
+
     public function index()
     {
 
-        $data['title'] = "Approval Gaji";
+        $data['title'] = "Slip Gaji Tendik";
         $data['user'] = $this->m_auth->getUserLogin();
-        $data['tendik'] = $this->getAllDataTendikPending();
-        $data['count_tendik'] = count($this->getAllDataTendikPending());
-        $data['script'] = "approve/approve_tendik";
+        $data['tendik'] = $this->getAllDataTendik();
+        $data['count_tendik'] = count($this->getAllDataTendik());
+        $data['script'] = null;
         //$data['users'] = $this->m_user->getAllUserPending();
         $this->load->view('template/header', $data);
-        $this->load->view('approve/v_approval_tendik', $data);
+        $this->load->view('tendik/v_slip_tendik', $data);
         $this->load->view('template/footer',$data);
     }
 
-    public function getAllDataTendikPending(){
-        $data['tendik']= $this->m_approve->getGajiTendikPendingList();
-
+    public function getAllDataTendik(){
+        $data['tendik']= $this->m_slip->getAllGajiTendikApprove();
+        
         $newData = array();
         foreach($data['tendik'] as $key => $dt){
             $newData[$key]['id_gaji_tendik']  = $dt['id_gaji_tendik'];
@@ -46,7 +48,7 @@ class Approve extends CI_Controller
     }
 
     public function getTotalGaji($id){
-        $row = $this->m_approve->getRowGajiPendingList($id);
+        $row = $this->m_tendik->getRowGaji($id);
         $data['total']=null;
 
         $BPSJKetnaker_yayasan = null;
@@ -75,22 +77,9 @@ class Approve extends CI_Controller
         return number_format($total,2, ".", ",") ;
     }
 
-    public function detailApproveTendik($id)
-    {
-        $data['title'] = "Detail Gaji Tendik";
-        $data['user'] = $this->m_auth->getUserLogin();
-        $data['tendik'] = $this->detailApproveDataTendik($id);
-        $data['script'] = null;
-        //$data['total']= $this->getTotalGaji(1);
+    public function detailDataTendik($id){
+        $data_tendik= $this->m_tendik->getRowGaji($id);
 
-        $this->load->view('template/header', $data);
-        $this->load->view('approve/v_detail_approval_tendik', $data);
-        $this->load->view('template/footer',$data);
-    }
-
-    public function detailApproveDataTendik($id){
-        $data_tendik= $this->m_approve->getRowGajiPendingList($id);
-        
         $BPSJKetnaker_yayasan = null;
         $BPSJKesehatan_yayasan = null;
         $BPSJKetnaker_pribadi = null;
@@ -146,47 +135,19 @@ class Approve extends CI_Controller
         return $newData;
     }
 
-    public function rejectGajiTendik(){
-        $id = $this->input->post('id');
-        $note = $this->input->post('note');
-
-        $data = [
-            'id_gaji_tendik' => $id,
-            'pesan' => $note,
-            'status' => 3,
-            "update_by"=>$_SESSION['nip'],
-            "update_date"=>date('Y-m-d H:i:s')
-        ];
-
-        $this->m_tendik->submitApproval($id,$data);
+    public function cetakSlip($id){
         
-    }
+        $data['tendik'] = $this->detailDataTendik($id);
 
-    public function approveGajiTendik($id){
-        // $id = $this->input->post('id');
-        // $note = $this->input->post('note');
-
-        $data = [
-            'id_gaji_tendik' => $id,
-            'status' => 2,
-            "update_by"=>$_SESSION['nip'],
-            "update_date"=>date('Y-m-d H:i:s')
-        ];
-
-        $this->m_tendik->submitApproval($id,$data);
-        redirect('approve');
-    }
-
-    public function homebase()
-    {
-        $data['title'] = "Approval Gaji";
-        $data['user'] = $this->m_auth->getUserLogin();
-        $data['users'] = $this->m_user->getAllUserPending();
-        $data['count_tendik'] = count($this->getAllDataTendikPending());
-        $data['script'] = null;
+        $this->load->library('pdf');
         
-        $this->load->view('template/header', $data);
-        $this->load->view('approve/v_approval_homebase', $data);
-        $this->load->view('template/footer',$data);
+        $file_pdf = 'Slip_Tendik_'.str_replace(' ','_',tanggal_indonesia2($data['tendik']['periode'])).'_'.$data['tendik']['nip'].'_'.str_replace(':','',date('YmdH:i:s'));;
+        
+        $paper = 'A4';
+        $orientation = "portrait";
+        
+		$html = $this->load->view('tendik/v_template_slip_tendik',$data,true);	    
+        // run dompdf
+        $this->pdf->generate($html, $file_pdf,$paper,$orientation);
     }
 }

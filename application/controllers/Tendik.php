@@ -15,12 +15,13 @@ class Tendik extends CI_Controller
         $data['title'] = "Gaji Tendik";
         $data['user'] = $this->m_auth->getUserLogin();
         $data['tendik'] = $this->getAllDataTendik();
-        print_r($this->m_tendik->getAllGajiTendik());
+        $data['script'] = 'gaji/gaji_tendik';
+        //print_r($this->m_tendik->getAllGajiTendik());
         //$data['total']= $this->getTotalGaji(1);
 
         $this->load->view('template/header', $data);
         $this->load->view('tendik/v_tendik', $data);
-        $this->load->view('template/footer');
+        $this->load->view('template/footer', $data);
         
 
     }
@@ -148,10 +149,23 @@ class Tendik extends CI_Controller
 
     public function sendForApproval($id){
         $data = [
-            "status" => 1
+            "status" => 1,
+            "update_by"=>$_SESSION['nip'],
+            "update_date"=>date('Y-m-d H:i:s')
         ];
 
         $this->m_tendik->submitApproval($id,$data);
+        redirect('tendik');
+    }
+
+    public function sendAllForApproval(){
+        $data = [
+            "status" => 1,
+            "update_by"=>$_SESSION['nip'],
+            "update_date"=>date('Y-m-d H:i:s')
+        ];
+
+        $this->m_tendik->submitAllApproval($data);
         redirect('tendik');
     }
 
@@ -182,10 +196,82 @@ class Tendik extends CI_Controller
             $data[$index]['periode'] = $data_gaji['periode'];
             $data[$index]['status']= 0;
             $data[$index]['pesan'] = '';
+            $data[$index]['create_date'] = date('Y-m-d H:i:s');
+            $data[$index]['create_by'] = $_SESSION['nip'];
+            $data[$index]['update_date'] = date('Y-m-d H:i:s');
+            $data[$index]['update_by'] = $_SESSION['nip'];
             $index++;
         }
         
         $this->m_tendik->insertToGajiTendik($data);
+        redirect('tendik');
+    }
+
+    public function getMessage(){
+        $id = $this->input->post('id');
+        $note = $this->m_tendik->getDataGajiTendikById($id);
+        $arr = array('code'=>2, 'response'=>$note['pesan'], 'updateby' =>$note['update_by']);    
+        echo json_encode( $arr );
+    }
+
+    public function getTendikFromAPI(){
+        
+        $data_gaji = $this->m_tendik->getDataTendikAPI();
+        $data_pinjaman = $this->m_tendik->getDataTendikAPIPinjaman(); 
+        $data = array();
+        $datap = array();
+        
+        
+
+        $indexp = 0;
+        foreach ($data_pinjaman->data as $dp){
+            $datap[$indexp]['nik_karyawan'] = $dp->nik_karyawan;
+            $datap[$indexp]['total_pinjaman'] = $dp->total_pinjaman;
+            $datap[$indexp]['tenor'] = $dp->tenor;
+            $datap[$indexp]['alasan'] = $dp->alasan;
+            $datap[$indexp]['tgl_pengajuan'] = $dp->tgl_pengajuan;
+            $datap[$indexp]['tgl_approval'] = $dp->tgl_approval;
+            $datap[$indexp]['created_date'] = date('Y-m-d H:i:s');
+            $datap[$indexp]['created_by'] = $_SESSION['nip'];
+            $datap[$indexp]['update_date'] = date('Y-m-d H:i:s');
+            $datap[$indexp]['update_by'] = $_SESSION['nip'];
+            $datap[$indexp]['status'] = 0;
+            $indexp++;
+        }
+
+        $index = 0;
+        foreach ($data_gaji->data as $data_gaji){
+            $data[$index]['nik_karyawan'] = $data_gaji->nik_karyawan;
+            $data[$index]['nama_karyawan'] = $data_gaji->name;
+            $data[$index]['no_rekening'] = $data_gaji->no_rek;
+            $data[$index]['nama_bank'] = $data_gaji->nama_bank;
+            $data[$index]['golongan'] = $data_gaji->golongan;
+            $data[$index]['jabatan'] = $data_gaji->jabatan;
+            $data[$index]['gaji_pokok'] = $data_gaji->gaji_pokok;
+            $data[$index]['t_jabatan_fungsional'] = $data_gaji->t_jabatan_fungsional;
+            $data[$index]['t_pendidikan_s3'] = $data_gaji->t_pendidikan_s3;
+            $data[$index]['tunjangan_kehadiran'] = $data_gaji->tunjangan_kehadiran;
+            $data[$index]['tunjangan_makan'] = $data_gaji->tunjangan_makan;
+            $data[$index]['t_jabatan_struktural'] = $data_gaji->t_jabatan_struktural;
+            $data[$index]['t_jabatan_rangkap'] = $data_gaji->t_jabatan_rangkap;
+            $data[$index]['bpjs_yayasan_ketnaker'] = $data_gaji->bpjs_yayasan_ketnaker;
+            $data[$index]['bpjs_yayasan_kesehatan'] = $data_gaji->bpjs_yayasan_kesehatan;
+            $data[$index]['bpjs_pribadi_ketnaker'] = $data_gaji->bpjs_pribadi_ketnaker;
+            $data[$index]['bpjs_pribadi_kesehatan'] = $data_gaji->bpjs_pribadi_kesehatan;
+            $data[$index]['transisi'] = $data_gaji->transisi;
+            $data[$index]['pph'] = $data_gaji->pphInt;
+            $data[$index]['periode'] = $data_gaji->periode;
+            $data[$index]['status']= 0;
+            $data[$index]['pesan'] = '';
+            $data[$index]['create_date'] = date('Y-m-d H:i:s');
+            $data[$index]['create_by'] = $_SESSION['nip'];
+            $data[$index]['update_date'] = date('Y-m-d H:i:s');
+            $data[$index]['update_by'] = $_SESSION['nip'];
+            $index++;
+        }
+
+        $this->m_tendik->insertToGajiTendik($data);
+        $this->m_tendik->insertToPinjaman($datap);
         redirect('tendik');
     }
 }

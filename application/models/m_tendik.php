@@ -13,13 +13,9 @@ class M_tendik extends CI_Model
 
     public function getRowGaji($id){
         
-        $this->db->select('u.name, mg.golongan, u.no_rek, u.nama_bank, gt.*, mj.jabatan');
-        $this->db->from('user_jabatan as uj');
-        $this->db->join('user as u', 'u.id = uj.user_id');
-        $this->db->join('master_jabatan as mj', 'mj.id_jabatan = uj.jabatan_id');
-        $this->db->join('master_golongan_tendik as mg', 'mg.id_golongan = uj.golongan_id');
-        $this->db->join('t_gaji_tendik as gt', 'gt.nik_karyawan = u.nik_karyawan','right');
-        $this->db->where('gt.id_gaji_tendik', $id);
+        $this->db->select('*');
+        $this->db->from('t_gaji_tendik');
+        $this->db->where('id_gaji_tendik', $id);
         return $this->db->get()->row_array();
     }
 
@@ -29,16 +25,52 @@ class M_tendik extends CI_Model
     }
     
     public function getDataGajiTendik(){
-        $this->db->select('u.nik_karyawan , u.name , u.no_rek, u.nama_bank , mg.golongan, mj.jabatan, mg.*, CAST(mg.pph AS int) as pphInt');
-        $this->db->from('user_jabatan as uj');
-        $this->db->join('user as u', 'u.id = uj.user_id');
-        $this->db->join('master_jabatan as mj', 'mj.id_jabatan = uj.jabatan_id');
-        $this->db->join('master_golongan_tendik as mg', 'mg.id_golongan = uj.golongan_id');
-        $this->db->order_by('mg.periode','desc');
+        $this->db->select('*');
+        $this->db->from('t_gaji_tendik');
+        $this->db->order_by('periode','desc');
         return $this->db->get()->result_array();
     }
 
     public function insertToGajiTendik($data){
         return $this->db->insert_batch('t_gaji_tendik',$data);
+    }
+
+    public function insertToPinjaman($data){
+        return $this->db->insert_batch('t_pinjaman_karyawan',$data);
+    }
+
+    public function submitAllApproval($data){
+        $this->db->where('status', 0);
+        $this->db->update('t_gaji_tendik', $data);
+    }
+
+    public function getDataGajiTendikById($id){
+        return $this->db->get_where('t_gaji_tendik', ['id_gaji_tendik' => $id])->row_array();
+    }
+
+    public function getDataTendikAPI(){
+        $api_url = "http://localhost:8080/api/api/gaji";
+
+        $response = $this->curl->simple_get($api_url);
+
+        if($response){
+            $data = json_decode($response);
+            return $data;
+        }else{
+            return false;
+        }
+    }
+
+    public function getDataTendikAPIPinjaman(){
+        $api_url = "http://localhost:8080/api/api/pinjaman";
+
+        $response = $this->curl->simple_get($api_url);
+
+        if($response){
+            $data = json_decode($response);
+            return $data;
+        }else{
+            return false;
+        }
     }
 }

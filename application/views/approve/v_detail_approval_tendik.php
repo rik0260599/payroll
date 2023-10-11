@@ -199,9 +199,47 @@
                     </div>
                 </div>
             </div>
+            <form action="<?= base_url('approve/approvalaction'); ?>" method="POST">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <textarea name="txtMessage" id="txtMessage" class="form form-control" rows="5"
+                                onkeydown="MessageInput(this.value, this.maxlength )" maxlength="255"
+                                placeholder="Note . . ."></textarea>
+                            <span class=" float-right text-secondary"><label id="lblCount">0</label>/255</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class=" float-right">
+                            <input type="submit" name="btnApprove" class="btn btn-outline-success btn-sm"
+                                value="Approve">
+                            <input type="submit" name="btnReject" class="btn btn-outline-danger btn-sm"
+                                onClick='javascript:return confirm(\"Anda yakin untuk akan melakukan reject?\")'
+                                value="Reject">
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
         <div class="card-footer py-3">
             <a href="<?= base_url('approve');?>" class="btn btn-warning btn-sm">Kembali</a>
         </div>
     </div>
 </div>
+
+<script>
+function MessageInput(e, l) {
+    var k = e.which == 0 ? e.keyCode : e.which;
+    //alert(k);
+    if (k == 8 || k == 37 || k == 39 || k == 46) return true;
+
+    var maxlength = l;
+    document.getElementById('lblCount').innerHTML = e.length;
+    if (e.length >= maxlength) {
+        return false;
+    }
+    return true;
+}
+</script>
